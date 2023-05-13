@@ -1,11 +1,17 @@
 import { Context, Schema, Session } from 'koishi'
-import { parsePlatform } from '@koishijs/helpers'
 
 export interface Config {}
 
 export const name = 'sudo'
 export const using = ['database'] as const
 export const Config: Schema<Config> = Schema.object({})
+
+function parsePlatform(target: string) {
+  const index = target.indexOf(':')
+  const platform = target.slice(0, index)
+  const id = target.slice(index + 1)
+  return [platform, id]
+}
 
 export function apply(ctx: Context) {
   ctx.i18n.define('zh', require('./locales/zh-CN'))
